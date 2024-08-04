@@ -21,10 +21,30 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r ./redirect/requirements.txt
-      - name: Build coverage file
+          pip install -r ./rules/requirements.txt
+        
+      - name: Run tests for redirect
         run: |
-          pytest --junitxml=pytest-redirect.xml --cov=redirect/app redirect/tests/ | tee pytest-coverage-redirect.txt
-      - name: pytest-coverage-commentator
+          coverage run --branch -m pytest redirect/tests/
+          coverage xml -o redirect-coverage.xml
+          coverage html -d htmlcov/redirect
+          coverage report
+
+      - name: Run tests for rules
+        run: |
+          coverage run --branch --append -m pytest rules/tests/
+          coverage xml -o rules-coverage.xml
+          coverage html -d htmlcov/rules
+          coverage report
+
+      - name: Combine coverage 
+        run: |
+          coverage combine
+          coverage xml -o combined-coverage.xml
+          coverage html -d htmlcov/combined
+          coverage report
+
+      - name: Upload coverage to Pytest Coverage Commentator
         uses: coroo/pytest-coverage-commentator@v1.0.2
         with:
-          pytest-coverage: pytest-coverage-redirect.txt
+          pytest-coverage: combined-coverage.xml
