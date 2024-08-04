@@ -23,7 +23,7 @@ jobs:
           pip install -r ./redirect/requirements.txt
       - name: Build coverage file
         run: |
-          pytest --junitxml=pytest-redirect.xml --cov-report=term-missing:skip-covered --cov=redirect/app redirect/tests/ | tee pytest-coverage-redirect.txt
+          pytest --junitxml=pytest-redirect.xml --cov=redirect/app redirect/tests/ | tee pytest-coverage-redirect.txt
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
