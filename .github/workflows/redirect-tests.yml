@@ -34,12 +34,16 @@ jobs:
         with:
           pytest-coverage-path: ./pytest-coverage-redirect.txt
           junitxml-path: ./pytest-redirect.xml
-      # - name: combine
-      #   run: |
-      #     coverage xml -o combined.xml
-      - name: Pytest coverage comment rules
-        uses: MishaKav/pytest-coverage-comment@main
-        id: rules
+      - name: combine
+        run: |
+          coverage xml -o combined.xml
+      # - name: Pytest coverage comment rules
+      #   uses: MishaKav/pytest-coverage-comment@main
+      #   id: rules
+      #   with:
+      #     pytest-coverage-path: ./pytest-coverage-rules.txt
+      #     junitxml-path: ./pytest-rules.xml
+      - name: pytest-coverage-commentator
+        uses: coroo/pytest-coverage-commentator@v1.0.2
         with:
-          pytest-coverage-path: ./pytest-coverage-rules.txt
-          junitxml-path: ./pytest-rules.xml
+          pytest-coverage: combined.xml
