@@ -1,4 +1,4 @@
-name: python-app
+name: rules-tests
 
 on: [pull_request]
 
@@ -23,9 +23,9 @@ jobs:
           pip install -r ./redirect/requirements.txt
       - name: Build coverage file
         run: |
-          pytest --junitxml=pytest-redirect.xml --cov=redirect/app redirect/tests/ | tee pytest-coverage-redirect.txt
+          pytest --junitxml=pytest-rules.xml --cov=rules/app rules/tests/ | tee pytest-coverage-rules.txt
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          pytest-coverage-path: ./pytest-coverage-redirect.txt
-          junitxml-path: ./pytest-redirect.xml
+          pytest-coverage-path: ./pytest-coverage-rules.txt
+          junitxml-path: ./pytest-rules.xml
