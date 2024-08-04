@@ -27,15 +27,15 @@ jobs:
       - name: Build coverage file redirect
         run: |
           pytest --junitxml=pytest-redirect.xml --cov=redirect/app redirect/tests/ | tee pytest-coverage-redirect.txt
-      - name: Pytest coverage comment
+      - name: Pytest coverage comment redirect
         uses: MishaKav/pytest-coverage-comment@main
         id: redirect
         with:
           pytest-coverage-path: ./pytest-coverage-redirect.txt
           junitxml-path: ./pytest-redirect.xml
-      - name: Pytest coverage comment
+      - name: Pytest coverage comment rules
         uses: MishaKav/pytest-coverage-comment@main
         id: rules
         with:
-          pytest-coverage-path: ./pytest-coverage-redirect.txt
-          junitxml-path: ./pytest-redirect.xml
+          pytest-coverage-path: ./pytest-coverage-rules.txt
+          junitxml-path: ./pytest-rules.xml
