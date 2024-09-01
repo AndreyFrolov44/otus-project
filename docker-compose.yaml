@@ -1,0 +1,15 @@
+services:
+  redirect:
+    container_name: redirect
+    build: 
+      context: ./redirect
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --reload
+
+  rules:
+    container_name: rules
+    build: 
+      context: ./rules
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --reload
+  

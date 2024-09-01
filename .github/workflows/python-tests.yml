@@ -1,0 +1,40 @@
+name: python-tests
+
+on: [pull_request]
+
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./redirect/requirements.txt
+          pip install -r ./rules/requirements.txt
+      - name: Build coverage file rules
+        run: |
+          pytest --junitxml=pytest-rules.xml --cov=rules/app rules/tests/ | tee pytest-coverage-rules.txt
+      - name: Build coverage file redirect
+        run: |
+          pytest --junitxml=pytest-redirect.xml --cov=redirect/app redirect/tests/ | tee pytest-coverage-redirect.txt
+      - name: Pytest coverage comment redirect
+        uses: MishaKav/pytest-coverage-comment@main
+        id: redirect
+        with:
+          pytest-coverage-path: ./pytest-coverage-redirect.txt
+          junitxml-path: ./pytest-redirect.xml
+      - name: pytest-coverage-commentator
+        uses: coroo/pytest-coverage-commentator@v1.0.2
+        with:
+          pytest-coverage: pytest-coverage-rules.txt
